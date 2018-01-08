@@ -22,7 +22,7 @@ describe('Agent', function() {
 			once: ['request', function() {
 				event_called++ ;
 			}],
-			query: {hello:'world'},
+			query: {hello: 'world'},
 			set: ['X-test', 'testing']
 		}) ;
 		assert.equal(0, called) ;
@@ -40,7 +40,7 @@ describe('Agent', function() {
 		.then(function(res) {
 			assert.equal(2, called) ;
 			assert.equal(2, event_called) ;
-			assert.deepEqual({hello:'world'}, res.body) ;
+			assert.deepEqual({hello: 'world'}, res.body) ;
 		}) ;
 	}) ;
 }) ;

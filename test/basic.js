@@ -136,8 +136,8 @@ describe('request', function(){
 			var calledErrorEvent = false ;
 			var calledOKHandler = false ;
 			request(superagent, {
-				get:uri + '/error',
-				ok:function(res){
+				get: uri + '/error',
+				ok: function(res){
 					assert.strictEqual(500, res.status) ;
 					calledOKHandler = true ;
 					return true ;
@@ -165,14 +165,14 @@ describe('request', function(){
 		it('should should be an Error object', function(done){
 			var calledErrorEvent = false ;
 			request(superagent, {
-				get:uri + '/error',
+				get: uri + '/error',
 				on: [
 					'error', function(err){
 						assert.strictEqual(err.status, 500) ;
 						calledErrorEvent = true ;
 					}
 				],
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						if (NODE)
 							res.error.message.should.equal('cannot GET /error (500)') ;
@@ -199,7 +199,7 @@ describe('request', function(){
       
 
 			return request(superagent, {
-				get:uri + '/error',
+				get: uri + '/error',
 				then: [
 					function(){
 						assert.fail() ;
@@ -215,8 +215,8 @@ describe('request', function(){
       
 
 			return request(superagent, {
-				get:uri + '/echo',
-				ok:function() {
+				get: uri + '/echo',
+				ok: function() {
 					return false ;
 				},
 				then: [
@@ -236,8 +236,8 @@ describe('request', function(){
       
 
 			return request(superagent, {
-				get:uri + '/echo',
-				ok:function() {
+				get: uri + '/echo',
+				ok: function() {
 					throw new Error('boom') ;
 				},
 				then: [
@@ -255,8 +255,8 @@ describe('request', function(){
 	describe('res.header', function(){
 		it('should be an object', function(done){
 			request(superagent, {
-				get:uri + '/login',
-				end:function(err, res){
+				get: uri + '/login',
+				end: function(err, res){
 					try {
 						assert.equal('Express', res.header['x-powered-by']) ;
 						done() ;
@@ -301,8 +301,8 @@ describe('request', function(){
 	describe('res.charset', function(){
 		it('should be set when present', function(done){
 			request(superagent, {
-				get:uri + '/login',
-				end:function(err, res){
+				get: uri + '/login',
+				end: function(err, res){
 					try {
 						res.charset.should.equal('utf-8') ;
 						done() ;
@@ -319,7 +319,7 @@ describe('request', function(){
 		it('should provide the first digit', function(done){
 			request(superagent, {
 				get: uri + '/login',
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						assert(!err, 'should not have an error for success responses') ;
 						assert.equal(200, res.status) ;
@@ -337,8 +337,8 @@ describe('request', function(){
 	describe('res.type', function(){
 		it('should provide the mime-type void of params', function(done){
 			request(superagent, {
-				get:uri + '/login',
-				end:function(err, res){
+				get: uri + '/login',
+				end: function(err, res){
 					try {
 						res.type.should.equal('text/html') ;
 						res.charset.should.equal('utf-8') ;
@@ -355,9 +355,9 @@ describe('request', function(){
 	describe('req.set(field, val)', function(){
 		it('should set the header field', function(done){
 			request(superagent, {
-				post:uri + '/echo',
+				post: uri + '/echo',
 				set: [ ['X-Foo', 'bar'], ['X-Bar', 'baz'] ],
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						assert.equal('bar', res.header['x-foo']) ;
 						assert.equal('baz', res.header['x-bar']) ;
@@ -409,10 +409,10 @@ describe('request', function(){
 
 		it('should map "json"', function(done){
 			request(superagent, {
-				post:uri + '/echo',
-				type:'json',
-				send:'{"a": 1}',
-				end:function(err, res){
+				post: uri + '/echo',
+				type: 'json',
+				send: '{"a": 1}',
+				end: function(err, res){
 					try {
 						res.should.be.json() ;
 						done() ;
@@ -426,9 +426,9 @@ describe('request', function(){
 
 		it('should map "html"', function(done){
 			request(superagent, {
-				post:uri + '/echo',
+				post: uri + '/echo',
 				type: 'html',
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						res.header['content-type'].should.equal('text/html') ;
 						done() ;
@@ -444,9 +444,9 @@ describe('request', function(){
 	describe('req.accept(str)', function(){
 		it('should set Accept', function(done){
 			request(superagent, {
-				get:uri + '/echo',
-				accept:'text/x-foo',
-				end:function(err, res){
+				get: uri + '/echo',
+				accept: 'text/x-foo',
+				end: function(err, res){
 					try {
 						res.header['accept'].should.equal('text/x-foo') ;
 						done() ;
@@ -460,9 +460,9 @@ describe('request', function(){
 
 		it('should map "json"', function(done){
 			request(superagent, {
-				get:uri + '/echo',
-				accept:'json',
-				end:function(err, res){
+				get: uri + '/echo',
+				accept: 'json',
+				end: function(err, res){
 					try {
 						res.header['accept'].should.equal('application/json') ;
 						done() ;
@@ -476,9 +476,9 @@ describe('request', function(){
 
 		it('should map "xml"', function(done){
 			request(superagent, {
-				get:uri + '/echo',
-				accept:'xml',
-				end:function(err, res){
+				get: uri + '/echo',
+				accept: 'xml',
+				end: function(err, res){
 					try {
 						// Mime module keeps changing this :(
 						assert(res.header['accept'] == 'application/xml' || res.header['accept'] == 'text/xml') ;
@@ -493,9 +493,9 @@ describe('request', function(){
 
 		it('should map "html"', function(done){
 			request(superagent, {
-				get:uri + '/echo',
-				accept:'html',
-				end:function(err, res){
+				get: uri + '/echo',
+				accept: 'html',
+				end: function(err, res){
 					try {
 						res.header['accept'].should.equal('text/html') ;
 						done() ;
@@ -511,10 +511,10 @@ describe('request', function(){
 	describe('req.send(str)', function(){
 		it('should write the string', function(done){
 			request(superagent, {
-				post:uri + '/echo',
-				type:'json',
-				send:'{"name":"tobi"}',
-				end:function(err, res){
+				post: uri + '/echo',
+				type: 'json',
+				send: '{"name":"tobi"}',
+				end: function(err, res){
 					try {
 						res.text.should.equal('{"name":"tobi"}') ;
 						done() ;
@@ -530,9 +530,9 @@ describe('request', function(){
 	describe('req.send(Object)', function(){
 		it('should default to json', function(done){
 			request(superagent, {
-				post:uri + '/echo',
-				send:{ name: 'tobi' },
-				end:function(err, res){
+				post: uri + '/echo',
+				send: { name: 'tobi' },
+				end: function(err, res){
 					try {
 						res.should.be.json() ;
 						res.text.should.equal('{"name":"tobi"}') ;
@@ -548,9 +548,9 @@ describe('request', function(){
 		describe('when called several times', function(){
 			it('should merge the objects', function(done){
 				request(superagent, {
-					post:uri + '/echo',
+					post: uri + '/echo',
 					send: [ [{ name: 'tobi' }], [{ age: 1 }] ],
-					end:function(err, res){
+					end: function(err, res){
 						try {
 							res.should.be.json() ;
 							if (NODE)
@@ -571,9 +571,9 @@ describe('request', function(){
 	describe('.end(fn)', function(){
 		it('should check arity', function(done){
 			request(superagent, {
-				post:uri + '/echo',
-				send:{ name: 'tobi' },
-				end:function(err, res){
+				post: uri + '/echo',
+				send: { name: 'tobi' },
+				end: function(err, res){
 					try {
 						assert.equal(null, err) ;
 						res.text.should.equal('{"name":"tobi"}') ;
@@ -597,8 +597,8 @@ describe('request', function(){
 
 		it('should emit response', function(done){
 			request(superagent, {
-				post:uri + '/echo',
-				send:{ name: 'tobi' },
+				post: uri + '/echo',
+				send: { name: 'tobi' },
 				on: ['response', function(res){
 					res.text.should.equal('{"name":"tobi"}') ;
 					done() ;
@@ -615,8 +615,8 @@ describe('request', function(){
       
 
 			request(superagent, {
-				post:uri + '/echo',
-				send:{ name: 'tobi' }
+				post: uri + '/echo',
+				send: { name: 'tobi' }
 			})
 			.then(function(res) {
 				res.text.should.equal('{"name":"tobi"}') ;
@@ -630,7 +630,7 @@ describe('request', function(){
       
 
 			request(superagent, {
-				get:uri + '/error'
+				get: uri + '/error'
 			})
 			.then(null, function(err) {
 				assert.equal(err.status, 500) ;
@@ -647,8 +647,8 @@ describe('request', function(){
       
 
 			request(superagent, {
-				get:uri + '/error',
-				catch:function(err) {
+				get: uri + '/error',
+				catch: function(err) {
 					assert.equal(err.status, 500) ;
 					assert.equal(err.response.text, 'boom') ;
 					done() ;
@@ -660,8 +660,8 @@ describe('request', function(){
 	describe('.abort()', function(){
 		it('should abort the request', function(done){
 			var req = request(superagent, {
-				get:uri + '/delay/3000',
-				end:function(err, res){
+				get: uri + '/delay/3000',
+				end: function(err, res){
 					try {
 						assert(false, 'should not complete the request') ;
 					}
@@ -683,7 +683,7 @@ describe('request', function(){
 
 		it('should allow chaining .abort() several times', function(done){
 			var req = request(superagent, {
-				get:uri + '/delay/3000'
+				get: uri + '/delay/3000'
 			})
 			.end(function(err, res){
 				try {
@@ -746,9 +746,9 @@ describe('request', function(){
 	describe('req.sortQuery()', function(){
 		it('nop with no querystring', function(done){
 			request(superagent, {
-				get:uri + '/url',
+				get: uri + '/url',
 				sortQuery: undefined,
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						assert.equal(res.text, '/url') ;
 						done() ;
@@ -762,7 +762,7 @@ describe('request', function(){
 
 		it('should sort the request querystring', function(done){
 			request(superagent, {
-				get:uri + '/url',
+				get: uri + '/url',
 				query: [ ['search=Manny'], ['order=desc'] ],
 				sortQuery: undefined,
 				end: function(err, res){
@@ -779,10 +779,10 @@ describe('request', function(){
 
 		it('should allow disabling sorting', function(done){
 			request(superagent, {
-				get:uri + '/url',
+				get: uri + '/url',
 				query: [ ['search=Manny'], ['order=desc'] ],
 				sortQuery: [ [undefined], [false] ],
-				end:function(err, res){
+				end: function(err, res){
 					try {
 						assert.equal(res.text, '/url?search=Manny&order=desc') ;
 						done() ;

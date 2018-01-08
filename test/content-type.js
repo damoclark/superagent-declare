@@ -12,10 +12,10 @@ describe('req.set("Content-Type", contentType)', function(){
 
 	it('should work with just the contentType component', function(done){
 		request(superagent, {
-			post:uri + '/echo',
+			post: uri + '/echo',
 			set: ['Content-Type', 'application/json'],
-			send:{ name: 'tobi' },
-			end:function(err, res){
+			send: { name: 'tobi' },
+			end: function(err, res){
 				assert(!err) ;
 				done() ;
 			}
@@ -24,10 +24,10 @@ describe('req.set("Content-Type", contentType)', function(){
 
 	it('should work with the charset component', function(done){
 		request(superagent, {
-			post:uri + '/echo',
+			post: uri + '/echo',
 			set: ['Content-Type', 'application/json; charset=utf-8'],
-			send:{ name: 'tobi' },
-			end:function(err, res){
+			send: { name: 'tobi' },
+			end: function(err, res){
 				assert(!err) ;
 				done() ;
 			}

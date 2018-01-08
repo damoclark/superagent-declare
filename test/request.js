@@ -214,7 +214,7 @@ describe('request', function() {
 	}) ;
 
 	it('put().send()', function(next){
-		request.put(uri + '/user/13/body').send({user:'new'}).end(function(err, res){
+		request.put(uri + '/user/13/body').send({user: 'new'}).end(function(err, res){
 			try {
 				assert.equal('received new', res.text, 'response text') ;
 				next() ;

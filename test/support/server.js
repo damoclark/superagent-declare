@@ -169,14 +169,14 @@ app.get('/delay/const', function(req, res) {
 }) ;
 
 app.get('/delay/zip', function(req, res) {
-	res.writeHead(200, {'Content-Type':'text/plain', 'Content-Encoding':'gzip'}) ;
+	res.writeHead(200, {'Content-Type': 'text/plain', 'Content-Encoding': 'gzip'}) ;
 	setTimeout(function(){
 		res.end() ;
 	}, 10000) ;
 }) ;
 
 app.get('/delay/json', function(req, res) {
-	res.writeHead(200, {'Content-Type':'application/json'}) ;
+	res.writeHead(200, {'Content-Type': 'application/json'}) ;
 	setTimeout(function(){
 		res.end() ;
 	}, 10000) ;
@@ -184,7 +184,7 @@ app.get('/delay/json', function(req, res) {
 
 var slowBodyCallback ;
 app.get('/delay/slowbody', function(req, res){
-	res.writeHead(200, {'Content-Type':'application/octet-stream'}) ;
+	res.writeHead(200, {'Content-Type': 'application/octet-stream'}) ;
 
 	// Send lots of garbage data to overflow all buffers along the way,
 	// so that the browser gets some data before the request is done
@@ -286,7 +286,7 @@ app.post('/auth', basicAuth('foo', 'bar'), function(req, res) {
 		user = credentials[0],
 		pass = credentials[1] ;
 
-	res.send({ user : user, pass : pass }) ;
+	res.send({ user: user, pass: pass }) ;
 }) ;
 
 app.get('/error', function(req, res){
@@ -400,7 +400,7 @@ app.all('/ua', function(req, res){
 }) ;
 
 app.get('/manny', function(req, res){
-	res.status(200).json({name:'manny'}) ;
+	res.status(200).json({name: 'manny'}) ;
 }) ;
 
 function serveImageWithType(res, type) {

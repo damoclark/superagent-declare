@@ -59,7 +59,7 @@ describe('Merging objects', function(){
 			request
 			.post('/echo')
 			.send(data)
-			.send({allowed:false}) ;
+			.send({allowed: false}) ;
 		}) ;
 	}) ;
 
@@ -72,13 +72,13 @@ describe('Merging objects', function(){
 		.post('/echo')
 		.send(new Blob(['will be cleared']))
 		.send(false)
-		.send({allowed:true}) ;
+		.send({allowed: true}) ;
 
 		assert.throws(function(){
 			request
 			.post('/echo')
 			.send(new Blob(['hello']))
-			.send({allowed:false}) ;
+			.send({allowed: false}) ;
 		}) ;
 	}) ;
 }) ;
