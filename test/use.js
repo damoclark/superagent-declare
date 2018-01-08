@@ -2,7 +2,8 @@ var setup = require('./support/setup') ;
 var uri = setup.uri ;
 
 var assert = require('assert') ;
-var request = require('superagent') ;
+var request = require('../') ;
+var superagent = require('superagent') ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -19,14 +20,14 @@ describe('request', function(){
 				req.url = uri + req.url ;
 				return req ;
 			}
-			request
-			.get('/echo')
-			.use(uuid)
-			.use(prefix)
-			.end(function(err, res){
-				assert.strictEqual(res.statusCode, 200) ;
-				assert.equal(res.get('X-UUID'), now) ;
-				done() ;
+			request(superagent, {
+				get: '/echo',
+				use: [ [uuid], [prefix] ],
+				end: function(err, res){
+					assert.strictEqual(res.statusCode, 200) ;
+					assert.equal(res.get('X-UUID'), now) ;
+					done() ;
+				}
 			}) ;
 		}) ;
 	}) ;
@@ -35,15 +36,15 @@ describe('request', function(){
 describe('subclass', function() {
 	var OriginalRequest ;
 	beforeEach(function(){
-		OriginalRequest = request.Request ;
+		OriginalRequest = superagent.Request ;
 	}) ;
 	afterEach(function(){
-		request.Request = OriginalRequest ;
+		superagent.Request = OriginalRequest ;
 	}) ;
 
 	it('should be an instance of Request', function(){
-		var req = request.get('/') ;
-		assert(req instanceof request.Request) ;
+		var req = request(superagent, {get: '/'}) ;
+		assert(req instanceof superagent.Request) ;
 	}) ;
 
 	it('should use patched subclass', function(){
@@ -60,9 +61,9 @@ describe('subclass', function() {
 			return this ;
 		} ;
 
-		request.Request = NewRequest ;
+		superagent.Request = NewRequest ;
 
-		var req = request.get('/').send() ;
+		var req = request(superagent, {get: '/'}).send() ;
 		assert(constructorCalled) ;
 		assert(sendCalled) ;
 		assert(req instanceof NewRequest) ;
@@ -76,9 +77,9 @@ describe('subclass', function() {
 			OriginalRequest.apply(this, arguments) ;
 		}
 		NewRequest.prototype = Object.create(OriginalRequest.prototype) ;
-		request.Request = NewRequest ;
+		superagent.Request = NewRequest ;
 
-		var req = request.agent().del('/') ;
+		var req = superagent.agent().del('/') ;
 		assert(req instanceof NewRequest) ;
 		assert(req instanceof OriginalRequest) ;
 	}) ;
