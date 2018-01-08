@@ -4,6 +4,8 @@ var uri = setup.uri ;
 var assert = require('assert') ;
 var request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('req.set("Content-Type", contentType)', function(){
 	this.timeout(20000) ;
 

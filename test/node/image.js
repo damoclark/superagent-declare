@@ -7,6 +7,8 @@ const fs = require('fs') ;
 
 const img = fs.readFileSync(`${__dirname}/fixtures/test.png`) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('res.body', () => {
 	describe('image/png', () => {
 		it('should parse the body', done => {

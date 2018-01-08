@@ -5,6 +5,8 @@ const base = setup.uri ;
 const assert = require('assert') ;
 const request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request', () => {
 	describe('on redirect', () => {
 		it('should follow Location', done => {

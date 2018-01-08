@@ -4,6 +4,8 @@ const setup = require('../support/setup') ;
 const base = setup.uri ;
 const fs = require('fs') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('pipe on redirect', () => {
 	const destPath = 'test/node/fixtures/pipe.txt' ;
 

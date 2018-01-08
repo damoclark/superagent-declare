@@ -5,6 +5,8 @@ const setup = require('../support/setup') ;
 const base = setup.uri ;
 const assert = require('assert') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('Merging objects', () => {
 	it('Don\'t mix Buffer and JSON', () => {
 		assert.throws(() => {

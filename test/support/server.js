@@ -188,7 +188,7 @@ app.get('/delay/slowbody', function(req, res){
 
 	// Send lots of garbage data to overflow all buffers along the way,
 	// so that the browser gets some data before the request is done
-	var initialDataSent = new Promise(function(resolve){
+	var initialDataSent = new Promise(function(resolve){ //eslint-disable-line no-undef
 		res.write(new Buffer(4000), function(){
 			res.write(new Buffer(16000)) ;
 			resolve() ;
@@ -197,18 +197,18 @@ app.get('/delay/slowbody', function(req, res){
 
 	// Make sure sending of request body takes over 1s,
 	// so that the test can't pass by accident.
-	var minimumTime = new Promise(function(resolve){
+	var minimumTime = new Promise(function(resolve){ //eslint-disable-line no-undef
 		setTimeout(resolve, 1001) ;
 	}) ;
 
-	new Promise(function(resolve){
+	new Promise(function(resolve){ //eslint-disable-line no-undef
 		// Waiting full 10 seconds for the test would be too annoying,
 		// so the remote callback is a hack to push the test forward
 		slowBodyCallback = resolve ;
 		setTimeout(resolve, 10000) ;
 	})
 	.then(function(){
-		return Promise.all([initialDataSent, minimumTime]) ;
+		return Promise.all([initialDataSent, minimumTime]) ; //eslint-disable-line no-undef
 	})
 	.then(function(){
 		res.end('bye') ;
@@ -315,7 +315,7 @@ app.delete('/no-content', function(req, res){
 }) ;
 
 app.get('/arraybuffer', function(req, res) {
-	var content = new ArrayBuffer(1000) ;
+	var content = new ArrayBuffer(1000) ; //eslint-disable-line no-undef
 	res.set('Content-Type', 'application/vnd.superagent') ;
 	res.send(content) ;
 }) ;

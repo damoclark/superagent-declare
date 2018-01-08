@@ -14,6 +14,8 @@ function getFreePort(fn) {
 	}) ;
 }
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('with network error', () => {
 	before(function(done) {
 		// connecting to a free port

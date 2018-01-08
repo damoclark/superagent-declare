@@ -2,6 +2,8 @@
 const assert = require('assert') ;
 const utils = require('../utils') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('utils.type(str)', () => {
 	it('should return the mime type', () => {
 		utils

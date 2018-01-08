@@ -3,6 +3,8 @@ const request = require('superagent') ;
 const setup = require('../support/setup') ;
 const base = setup.uri ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request', () => {
 	describe('not modified', () => {
 		let ts ;

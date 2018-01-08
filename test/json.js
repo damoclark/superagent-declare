@@ -5,6 +5,8 @@ var doesntWorkInBrowserYet = setup.NODE ;
 var assert = require('assert') ;
 var request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('req.send(Object) as "json"', function(){
 	this.timeout(20000) ;
 

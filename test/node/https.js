@@ -23,6 +23,8 @@ app.get('/', (req, res) => {
 const base = 'https://localhost' ;
 let testEndpoint ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('https', () => {
 	describe('certificate authority', () => {
 		before(function listen(done) {

@@ -4,6 +4,8 @@ const setup = require('../support/setup') ;
 const base = setup.uri ;
 const URL = require('url') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('Basic auth', () => {
 	describe('when credentials are present in url', () => {
 		it('should set Authorization', done => {

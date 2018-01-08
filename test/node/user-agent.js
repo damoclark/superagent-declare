@@ -4,6 +4,8 @@ const request = require('superagent') ;
 const setup = require('../support/setup') ;
 const base = setup.uri ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('req.get()', () => {
 	it('should set a default user-agent', () =>
 		request.get(`${base}/ua`).then(res => {

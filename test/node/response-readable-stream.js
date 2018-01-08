@@ -17,6 +17,8 @@ before(function listen(done) {
 	}) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('response', () => {
 	it('should act as a readable stream', done => {
 		const req = request.get(base).buffer(false) ;

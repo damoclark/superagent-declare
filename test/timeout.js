@@ -3,6 +3,8 @@ var base = setup.uri ;
 var assert = require('assert') ;
 var request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('.timeout(ms)', function(){
 	this.timeout(15000) ;
 

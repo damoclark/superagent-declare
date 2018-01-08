@@ -4,25 +4,26 @@ var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
 
+/*eslint no-undef:0*/
 describe('Agent', function() {
 	it('should remember defaults', function() {
 		if ('undefined' === typeof Promise) 
 			return ;
-    
+		
 
 		var called = 0 ;
 		var event_called = 0 ;
 		var agent = superagent.agent() ;
 		agent = request(agent, {
-	    accept: 'json',
-	    use: function() {
+			accept: 'json', 
+			use: function() {
 				called++ ;
 			},
-	    once: ['request', function() {
+			once: ['request', function() {
 				event_called++ ;
 			}],
-	    query: {hello:'world'},
-	    set: ['X-test', 'testing']
+			query: {hello:'world'},
+			set: ['X-test', 'testing']
 		}) ;
 		assert.equal(0, called) ;
 		assert.equal(0, event_called) ;

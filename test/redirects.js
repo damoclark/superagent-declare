@@ -5,6 +5,8 @@ var isMSIE = !setup.NODE && /Trident\//.test(navigator.userAgent) ;
 var assert = require('assert') ;
 var request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request', function(){
 	this.timeout(20000) ;
 	describe('on redirect', function(){

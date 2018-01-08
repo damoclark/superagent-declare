@@ -8,6 +8,8 @@ if (!assert.deepStrictEqual) assert.deepStrictEqual = assert.deepEqual ;
 
 var formDataSupported = setup.NODE || 'undefined' !== FormData ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('req.send(Object) as "form"', function(){
 	describe('with req.type() set to form', function(){
 		it('should send x-www-form-urlencoded data', function(done){

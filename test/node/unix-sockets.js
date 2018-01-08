@@ -22,6 +22,8 @@ app.get('/request/path', (req, res) => {
 	res.send('request path ok!') ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('[unix-sockets] http', () => {
 	if (process.platform === 'win32') 
 		return ;

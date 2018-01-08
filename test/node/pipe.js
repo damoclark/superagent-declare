@@ -24,6 +24,8 @@ before(function listen(done) {
 	}) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request pipe', () => {
 	const destPath = 'test/node/fixtures/tmp.json' ;
 

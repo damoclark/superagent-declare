@@ -7,6 +7,8 @@ function uniqid() {
 	return Math.random() * 10000000 ;
 }
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('.retry(count)', function(){
 	this.timeout(15000) ;
 

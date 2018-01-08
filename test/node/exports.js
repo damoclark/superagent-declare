@@ -1,6 +1,8 @@
 'use strict' ;
 const request = require('superagent') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('exports', () => {
 	it('should expose .protocols', () => {
 		Object.keys(request.protocols).should.eql(['http:', 'https:']) ;

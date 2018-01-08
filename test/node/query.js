@@ -30,6 +30,8 @@ before(function listen(done) {
 	}) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('req.query(String)', () => {
 	// This is no longer true as of qs v3.0.0 (https://github.com/ljharb/qs/commit/0c6f2a6318c94f6226d3cf7fe36094e9685042b6)
 	// it('should supply uri malformed error to the callback')

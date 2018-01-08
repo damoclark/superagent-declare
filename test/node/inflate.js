@@ -13,6 +13,8 @@ const app = express(),
 let base = 'http://localhost' ;
 let server ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 before(function listen(done) {
 	server = app.listen(0, function listening() {
 		base += `:${server.address().port}` ;

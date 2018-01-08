@@ -9,6 +9,8 @@ const EventEmitter = require('events').EventEmitter ;
 const StringDecoder = require('string_decoder').StringDecoder ;
 const url = require('url') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('[node] request', () => {
 	describe('with an url', () => {
 		it('should preserve the encoding of the url', done => {

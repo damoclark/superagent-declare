@@ -10,6 +10,8 @@ function read(file) {
 	return fs.readFileSync(file, 'utf8') ;
 }
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('Reques', () => {
 	describe('#field(name, value)', () => {
 		it('should set a multipart field value', () => {

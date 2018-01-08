@@ -1,6 +1,8 @@
 var assert = require('assert') ;
 var request = require('../../') ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('xdomain', function(){
 	this.timeout(20000) ;
 

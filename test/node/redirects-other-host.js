@@ -44,6 +44,8 @@ app2.all('/', (req, res) => {
 	res.send(req.method) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request.get', () => {
 	describe('on 301 redirect', () => {
 		it('should follow Location with a GET request', done => {

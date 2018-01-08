@@ -18,6 +18,8 @@ function parse(str, obj) {
     + JSON.stringify(val)) ;
 }
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request.serializeObject()', function(){
 	it('should serialize', function() {
 		serialize('test', 'test') ;

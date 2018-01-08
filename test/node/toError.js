@@ -17,15 +17,17 @@ before(function listen(done) {
 	}) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('res.toError()', () => {
 	it('should return an Error', done => {
 		request.get(base).end((err, res) => {
-			var err = res.toError() ;
-			assert.equal(err.status, 400) ;
-			assert.equal(err.method, 'GET') ;
-			assert.equal(err.path, '/') ;
-			assert.equal(err.message, 'cannot GET / (400)') ;
-			assert.equal(err.text, 'invalid json') ;
+			var error = res.toError() ;
+			assert.equal(error.status, 400) ;
+			assert.equal(error.method, 'GET') ;
+			assert.equal(error.path, '/') ;
+			assert.equal(error.message, 'cannot GET / (400)') ;
+			assert.equal(error.text, 'invalid json') ;
 			done() ;
 		}) ;
 	}) ;

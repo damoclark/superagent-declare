@@ -66,6 +66,8 @@ before(function listen(done) {
 	}) ;
 }) ;
 
+/*eslint no-undef:0*/
+/*eslint no-unused-vars:0*/
 describe('request', () => {
 	describe('persistent agent', () => {
 		const agent1 = request.agent() ;
