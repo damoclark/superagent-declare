@@ -10,10 +10,12 @@ var allowedOptions =
 	auth: null,
 	buffer: null,
 	ca: null,
+	catch: null,
 	cert: null,
 	clearTimeout: null,
 	del: null,
 	delete: null,
+	end: null,
 	field: null,
 	get: null,
 	getHeader: null,
@@ -95,17 +97,17 @@ function SuperagentOptions(superagent, options) {
 	// Our own copy to mutate
 	var opts = clone(options) ;
 
+	console.warn('opts blabber='+util.inspect(opts)) ;
+	console.warn('options blabber='+util.inspect(options)) ;
 	// Check only valid options provided
-	for(var opt in opts) {
-		if(!allowedOptions.hasOwnProperty(opt)) 
+	Object.keys(opts).forEach(function(opt){
+		if(!allowedOptions.hasOwnProperty(opt))
 			throw new Error('Invalid option "'+opt+'" supplied') ;
-		
-	}
+	}) ;
 
 	// Determine which option goes first according to superagent API
 	var firstMethod = findFirst(opts) ;
-	// if(firstMethod.length < 1)
-	// 	throw new Error('Must provide one of: '+requiredFirst.join(',')) ;
+
 	if(firstMethod.length > 1)
 		throw new Error('Must provide only one of: '+requiredFirst.join(',')+' but the following were provided: '+firstMethod.join(',')) ;
 
@@ -122,9 +124,9 @@ function SuperagentOptions(superagent, options) {
 	var lastMethods = findLast(opts) ;
 
 	// Apply remaining methods to this instance
-	for(var method in opts) 
+	Object.keys(opts).forEach(function(method) {
 		agent = call(agent, method, opts[method]) ;
-	
+	}) ;
 
 	// Finalise with any last options
 	lastMethods.forEach(function(method){
@@ -136,11 +138,11 @@ function SuperagentOptions(superagent, options) {
 }
 
 function call(agent, methodName, parameters) {
-	console.warn(`parameters=${util.inspect(parameters)}`) ;
+	// console.warn(`parameters=${util.inspect(parameters)}`) ;
 	if(!Array.isArray(parameters))
 		parameters = [].concat(parameters) ;
 
-	console.warn(`agent=${util.inspect(agent)}`) ;
+	// console.warn(`agent=${util.inspect(agent)}`) ;
 	var args = [] ;
 	parameters.forEach(function(param) {
 		if(args.length === 0 && Array.isArray(param)) {
