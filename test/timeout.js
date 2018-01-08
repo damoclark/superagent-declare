@@ -96,7 +96,7 @@ describe('.timeout(ms)', function(){
 				timeout: {response: 1000},
 				on: ['progress', function(){
 					// This only makes the test faster without relying on arbitrary timeouts
-					request.get(base + '/delay/slowbody/finish').end() ;
+					superagent.get(base + '/delay/slowbody/finish').end() ;
 				}],
 				end: done
 			}) ;

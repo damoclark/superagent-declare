@@ -1,6 +1,7 @@
 
 var assert = require('assert') ;
 var request = require('../../') ;
+var superagent = require('superagent') ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -8,7 +9,7 @@ describe('request', function() {
 	this.timeout(20000) ;
 
 	it('request() error object', function(next) {
-		request('GET', '/error').end(function(err, res) {
+		superagent('GET', '/error').end(function(err, res) {
 			assert(err) ;
 			assert(res.error, 'response should be an error') ;
 			assert.equal(res.error.message, 'cannot GET /error (500)') ;
@@ -24,7 +25,7 @@ describe('request', function() {
 	var isIE9OrOlder = !window.atob ;
 	if (!isIE9OrOlder && !isIE11) { // Don't run on IE9 or older, or IE11
 		it('patch()', function(next){
-			request.patch('/user/12').end(function(err, res){
+			superagent.patch('/user/12').end(function(err, res){
 				assert.equal('updated', res.text) ;
 				next() ;
 			}) ;
@@ -40,12 +41,13 @@ describe('request', function() {
 		var data = new FormData() ;
 		data.append('foo', 'bar') ;
 
-		request
-		.post('/echo')
-		.send(data)
-		.end(function(err, res){
-			assert.equal('multipart/form-data', res.type) ;
-			next() ;
+		request(superagent, {
+			post: '/echo',
+			send: data,
+			end: function(err, res){
+				assert.equal('multipart/form-data', res.type) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
@@ -63,7 +65,7 @@ describe('request', function() {
 			return next() ;
 		}
 
-		request
+		superagent
 		.post('/echo')
 		.attach('image', file)
 		.end(function(err, res){
@@ -74,49 +76,54 @@ describe('request', function() {
 	}) ;
 
 	it('GET invalid json', function(next) {
-		request
-		.get('/invalid-json')
-		.end(function(err, res) {
-			assert(err.parse) ;
-			assert.deepEqual(err.rawResponse, ')]}\', {\'header\':{\'code\':200,\'text\':\'OK\',\'version\':\'1.0\'},\'data\':\'some data\'}') ;
-			next() ;
+		request(superagent, {
+			get: '/invalid-json',
+			end: function(err, res) {
+				assert(err.parse) ;
+				assert.deepEqual(err.rawResponse, ')]}\', {\'header\':{\'code\':200,\'text\':\'OK\',\'version\':\'1.0\'},\'data\':\'some data\'}') ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('GET querystring empty objects', function(next){
-		var req = request
-		.get('/querystring')
-		.query({})
-		.end(function(err, res){
-			assert.deepEqual(req._query, []) ;
-			assert.deepEqual(res.body, {}) ;
-			next() ;
+		var req = request(superagent, {
+			get: '/querystring',
+			query: {},
+			end: function(err, res){
+				assert.deepEqual(req._query, []) ;
+				assert.deepEqual(res.body, {}) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('GET querystring object .get(uri, obj)', function(next){
-		request
-		.get('/querystring', { search: 'Manny' })
-		.end(function(err, res){
-			assert.deepEqual(res.body, { search: 'Manny' }) ;
-			next() ;
+		request(superagent, {
+			get: ['/querystring', { search: 'Manny' }],
+			end: function(err, res){
+				assert.deepEqual(res.body, { search: 'Manny' }) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('GET querystring object .get(uri, obj, fn)', function(next){
-		request
-		.get('/querystring', { search: 'Manny'}, function(err, res){
-			assert.deepEqual(res.body, { search: 'Manny' }) ;
-			next() ;
+		request(superagent, {
+			get: ['/querystring', { search: 'Manny'}, function(err, res){
+				assert.deepEqual(res.body, { search: 'Manny' }) ;
+				next() ;
+			}]
 		}) ;
 	}) ;
 
 	it('GET querystring object with null value', function(next){
-		request
-		.get('/url', { nil: null })
-		.end(function(err, res){
-			assert.equal(res.text, '/url?nil') ;
-			next() ;
+		request(superagent, {
+			get: ['/url', { nil: null }],
+			end: function(err, res){
+				assert.equal(res.text, '/url?nil') ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
@@ -124,22 +131,23 @@ describe('request', function() {
 		if ('undefined' === typeof Blob) 
 			return next() ;
   
-		request
-		.get('/blob', { foo: 'bar'})
-		.responseType('blob')
-		.end(function(err, res){
-			assert(res.xhr.response instanceof Blob) ;
-			assert(res.body instanceof Blob) ;
-			next() ;
+		request(superagent, {
+			get: ['/blob', { foo: 'bar'}],
+			responseType: 'blob',
+			end: function(err, res){
+				assert(res.xhr.response instanceof Blob) ;
+				assert(res.body instanceof Blob) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('Reject node-only function', function(){
 		assert.throws(function(){
-			request.get().write() ;
+			superagent.get().write() ;
 		}) ;
 		assert.throws(function(){
-			request.get().pipe() ;
+			superagent.get().pipe() ;
 		}) ;
 	}) ;
 
@@ -147,48 +155,52 @@ describe('request', function() {
 	it('basic auth', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request
-		.post('/auth')
-		.auth('foo', 'bar')
-		.end(function(err, res){
-			assert.equal('foo', res.body.user) ;
-			assert.equal('bar', res.body.pass) ;
-			next() ;
+		request(superagent, {
+			post: '/auth',
+			auth: ['foo', 'bar'],
+			end: function(err, res){
+				assert.equal('foo', res.body.user) ;
+				assert.equal('bar', res.body.pass) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('auth type "basic"', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request
-		.post('/auth')
-		.auth('foo', 'bar', {type: 'basic'})
-		.end(function(err, res){
-			assert.equal('foo', res.body.user) ;
-			assert.equal('bar', res.body.pass) ;
-			next() ;
+		request(superagent, {
+			post: '/auth',
+			auth: ['foo', 'bar', {type: 'basic'}],
+			end: function(err, res){
+				assert.equal('foo', res.body.user) ;
+				assert.equal('bar', res.body.pass) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('auth type "auto"', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request
-		.post('/auth')
-		.auth('foo', 'bar', {type: 'auto'})
-		.end(function(err, res){
-			assert.equal('foo', res.body.user) ;
-			assert.equal('bar', res.body.pass) ;
-			next() ;
+		request(superagent, {
+			post: '/auth',
+			auth: ['foo', 'bar', {type: 'auto'}],
+			end: function(err, res){
+				assert.equal('foo', res.body.user) ;
+				assert.equal('bar', res.body.pass) ;
+				next() ;
+			}
 		}) ;
 	}) ;
 
 	it('progress event listener on xhr object registered when some on the request', function(){
-		var req = request
-		.get('/foo')
-		.on('progress', function(data) {
-		})
-		.end() ;
+		var req = request(superagent, {
+			get: '/foo',
+			on: ['progress', function(data) {
+			}],
+			end: []
+		}) ;
 
 		if (req.xhr.upload) { // Only run assertion on capable browsers
 			assert.notEqual(null, req.xhr.upload.onprogress) ;
@@ -196,9 +208,10 @@ describe('request', function() {
 	}) ;
 
 	it('no progress event listener on xhr object when none registered on request', function(){
-		var req = request
-		.get('/foo')
-		.end() ;
+		var req = request(superagent, {
+			get: '/foo',
+			end: []
+		}) ;
 
 		if (req.xhr.upload) { // Only run assertion on capable browsers
 			assert.strictEqual(null, req.xhr.upload.onprogress) ;
@@ -213,86 +226,91 @@ describe('request', function() {
 			return JSON.stringify(data) ;
 		}
 
-		request
-		.post('/user')
-		.serialize(testParser)
-		.type('json')
-		.send({ foo: 123 })
-		.end(function(err) {
-			if (err) return done(err) ;
-			assert(runParser) ;
-			done() ;
+		request(superagent, {
+			post: '/user',
+			serialize: testParser,
+			type: 'json',
+			send: { foo: 123 },
+			end: function(err) {
+				if (err) return done(err) ;
+				assert(runParser) ;
+				done() ;
+			}
 		}) ;
 	}) ;
 
 	// Don't run on browsers without xhr2 support
 	if ('FormData' in window) {
 		it('xhr2 download file old hack', function(next) {
-			request.parse['application/vnd.superagent'] = function(obj) {
+			superagent.parse['application/vnd.superagent'] = function(obj) {
 				return obj ;
 			} ;
 
-			request
-			.get('/arraybuffer')
-			.on('request', function() {
-				this.xhr.responseType = 'arraybuffer' ;
-			})
-			.on('response', function(res) {
-				assert(res.body instanceof ArrayBuffer) ;
-				next() ;
-			})
-			.end() ;
+			request(superagent, {
+				get: '/arraybuffer',
+				on: [ ['request', function() {
+					this.xhr.responseType = 'arraybuffer' ;
+				}], ['response', function(res) {
+					assert(res.body instanceof ArrayBuffer) ;
+					next() ;
+				}] ],
+				end: []
+			}) ;
 		}) ;
 
 		it('xhr2 download file responseType', function(next) {
-			request.parse['application/vnd.superagent'] = function(obj) {
+			superagent.parse['application/vnd.superagent'] = function(obj) {
 				return obj ;
 			} ;
 
-			request
-			.get('/arraybuffer')
-			.responseType('arraybuffer')
-			.on('response', function(res) {
-				assert(res.body instanceof ArrayBuffer) ;
-				next() ;
-			})
-			.end() ;
+			request(superagent, {
+				get: '/arraybuffer',
+				responseType: 'arraybuffer',
+				on: ['response', function(res) {
+					assert(res.body instanceof ArrayBuffer) ;
+					next() ;
+				}],
+				end: []
+			}) ;
 		}) ;
 
 		it('get error status code and rawResponse on file download', function(next) {
-			request
-			.get('/arraybuffer-unauthorized')
-			.responseType('arraybuffer')
-			.end(function(err, res) {
-				assert.equal(err.status, 401) ;
-				assert(res.body instanceof ArrayBuffer) ;
-				assert(err.response.body instanceof ArrayBuffer) ;
-				var decodedString = String.fromCharCode.apply(null, new Uint8Array(res.body)) ;
-				assert(decodedString, '{"message":"Authorization has been denied for this request."}') ;
-				next() ;
+			request(superagent, {
+				get: '/arraybuffer-unauthorized',
+				responseType: 'arraybuffer',
+				end: function(err, res) {
+					assert.equal(err.status, 401) ;
+					assert(res.body instanceof ArrayBuffer) ;
+					assert(err.response.body instanceof ArrayBuffer) ;
+					var decodedString = String.fromCharCode.apply(null, new Uint8Array(res.body)) ;
+					assert(decodedString, '{"message":"Authorization has been denied for this request."}') ;
+					next() ;
+				}
 			}) ;
 		}) ;
 	}
 
 	it('parse should take precedence over default parse', function(done){
-		request
-		.get('/foo')
-		.parse(function(res, text) {
-			return 'customText: ' + res.status ; 
-		})
-		.end(function(err, res){
-			assert(res.ok) ;
-			assert(res.body === 'customText: 200') ;
-			done() ;
+		request(superagent, {
+			get: '/foo',
+			parse: function(res, text) {
+				return 'customText: ' + res.status ;
+			},
+			end: function(err, res){
+				assert(res.ok) ;
+				assert(res.body === 'customText: 200') ;
+				done() ;
+			}
 		}) ;
 	}) ;
 
 	it('handles `xhr.open()` errors', function(done){
-		request
-		.get('http://foo\0.com') // throws "Failed to execute 'open' on 'XMLHttpRequest': Invalid URL"
-		.end(function(err, res){
-			assert(err) ;
-			done() ;
+		request(superagent, {
+			get: 'http://foo\0.com',
+			end: function(err, res){
+				assert(err) ;
+				done() ;
+			}
 		}) ;
 	}) ;
 

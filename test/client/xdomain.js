@@ -1,5 +1,5 @@
 var assert = require('assert') ;
-var request = require('../../') ;
+var request = require('superagent') ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
