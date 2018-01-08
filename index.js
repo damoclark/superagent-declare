@@ -142,6 +142,10 @@ function call(agent, methodName, parameters) {
 	if(!Array.isArray(parameters))
 		parameters = [].concat(parameters) ;
 
+	// If provided an empty array, then we want to call the method without any parameters
+	if(parameters.length === 0)
+		parameters.push([]) ;
+
 	// console.warn(`agent=${util.inspect(agent)}`) ;
 	var args = [] ;
 	parameters.forEach(function(param) {
