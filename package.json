@@ -1,0 +1,46 @@
+{
+  "name": "superagent-declare",
+  "version": "1.0.0",
+  "description": "Provides a declarative API to superagent",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damoclark/superagent-declare.git"
+  },
+  "keywords": [
+    "superagent",
+    "agent",
+    "declarative",
+    "extension"
+  ],
+  "author": "Damien Clark",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/damoclark/superagent-declare/issues"
+  },
+  "homepage": "https://github.com/damoclark/superagent-declare#readme",
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "Base64": "^1.0.1",
+    "basic-auth-connect": "^1.0.0",
+    "body-parser": "^1.18.2",
+    "browserify": "^14.1.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.0",
+    "express-session": "^1.15.6",
+    "marked": "^0.3.6",
+    "mocha": "^3.5.3",
+    "multer": "^1.3.0",
+    "should": "^11.2.0",
+    "should-http": "^0.1.1",
+    "zuul": "^3.11.1",
+    "superagent": "3.8.2"
+  },
+  "dependencies": {
+    "clone": "^2.1.1"
+  }
+}
