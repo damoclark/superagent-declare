@@ -5,6 +5,7 @@ var isMSIE = !setup.NODE && /Trident\//.test(navigator.userAgent) ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -12,7 +13,7 @@ describe('request', function(){
 	this.timeout(20000) ;
 	describe('on redirect', function(){
 		it('should retain header fields', function(done){
-			request(superagent, {
+			request({
 				get: base + '/header',
 				set: ['X-Foo', 'bar'],
 				end: function(err, res){
@@ -29,7 +30,7 @@ describe('request', function(){
 		}) ;
 
 		it('should preserve timeout across redirects', function(done){
-			request(superagent, {
+			request({
 				get: base + '/movies/random',
 				timeout: 250,
 				end: function(err, res){
@@ -47,7 +48,7 @@ describe('request', function(){
 
 		it('should successfully redirect after retry on error', function(done){
 			var id = Math.random() * 1000000 * Date.now() ;
-			request(superagent, {
+			request({
 				get: base + '/error/redirect/' + id,
 				retry: 2,
 				end: function(err, res){
@@ -60,7 +61,7 @@ describe('request', function(){
 
 		it('should preserve retries across redirects', function(done) {
 			var id = Math.random() * 1000000 * Date.now() ;
-			request(superagent, {
+			request({
 				get: base + '/error/redirect-error' + id,
 				retry: 2,
 				end: function(err, res){
@@ -76,7 +77,7 @@ describe('request', function(){
 
 	describe('on 303', function(){
 		it('should redirect with same method', function(done){
-			request(superagent, {
+			request({
 				put: base + '/redirect-303',
 				send: {msg: 'hello'},
 				redirects: 1,
@@ -99,7 +100,7 @@ describe('request', function(){
 		it('should redirect with same method', function(done){
 			if (isMSIE) return done() ; // IE9 broken
 
-			request(superagent, {
+			request({
 				put: base + '/redirect-307',
 				send: {msg: 'hello'},
 				redirects: 1,
@@ -122,7 +123,7 @@ describe('request', function(){
 		it('should redirect with same method', function(done){
 			if (isMSIE) return done() ; // IE9 broken
 
-			request(superagent, {
+			request({
 				put: base + '/redirect-308',
 				send: {msg: 'hello'},
 				redirects: 1,

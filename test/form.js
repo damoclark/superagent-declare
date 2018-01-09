@@ -3,6 +3,7 @@ var base = setup.uri ;
 var should = require('should') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 var assert = require('assert') ;
 if (!assert.deepStrictEqual) assert.deepStrictEqual = assert.deepEqual ;
@@ -14,7 +15,7 @@ var formDataSupported = setup.NODE || 'undefined' !== FormData ;
 describe('req.send(Object) as "form"', function(){
 	describe('with req.type() set to form', function(){
 		it('should send x-www-form-urlencoded data', function(done){
-			request(superagent, {
+			request({
 				post: base + '/echo',
 				type: 'form',
 				send: { name: 'tobi' },
@@ -29,7 +30,7 @@ describe('req.send(Object) as "form"', function(){
 
 	describe('when called several times', function(){
 		it('should merge the objects', function(done){
-			request(superagent, {
+			request({
 				post: base + '/echo',
 				type: 'form',
 				send: [ [{ name: { first: 'tobi', last: 'holowaychuk' } }], [{ age: '1' }] ],
@@ -45,7 +46,7 @@ describe('req.send(Object) as "form"', function(){
 
 describe('req.attach', function(){
 	it('ignores null file', function(done){
-		request(superagent, {
+		request({
 			post: '/echo',
 			attach: ['image', null],
 			end: function(err, res){
@@ -61,7 +62,7 @@ describe('req.field', function(){
 			return done() ;
     
 
-		request(superagent, {
+		request({
 			post: base + '/formecho',
 			field: [ ['bools', true], ['strings', 'true'] ],
 			end: function(err, res){
@@ -77,7 +78,7 @@ describe('req.field', function(){
 			return done() ;
     
 
-		request(superagent, {
+		request({
 			post: base + '/formecho',
 			field: {bools: true, strings: 'true'},
 			end: function(err, res){
@@ -93,7 +94,7 @@ describe('req.field', function(){
 			return done() ;
     
 
-		request(superagent, {
+		request({
 			post: base + '/formecho',
 			field: {numbers: [1, 2, 3]},
 			end: function(err, res){
@@ -109,7 +110,7 @@ describe('req.field', function(){
 			return done() ;
     
 
-		request(superagent, {
+		request({
 			post: base + '/formecho',
 			field: [ 'letters', ['a', 'b', 'c'] ],
 			end: function(err, res){
@@ -122,14 +123,14 @@ describe('req.field', function(){
 
 	it('throw when empty', function(){
 		should.throws(function(){
-			request(superagent, {
+			request({
 				post: base + '/echo',
 				field: undefined
 			}) ;
 		}, /name/) ;
 
 		should.throws(function(){
-			request(superagent, {
+			request({
 				post: base + '/echo',
 				field: 'name'
 			}) ;

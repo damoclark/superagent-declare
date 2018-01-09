@@ -3,6 +3,7 @@ var base = setup.uri ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 function uniqid() {
 	return Math.random() * 10000000 ;
@@ -14,7 +15,7 @@ describe('.retry(count)', function(){
 	this.timeout(15000) ;
 
 	it('should not retry if passed "0"', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: 0,
 			end: function(err, res){
@@ -32,7 +33,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should not retry if passed an invalid number', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: -2,
 			end: function(err, res){
@@ -50,7 +51,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should not retry if passed undefined', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: undefined,
 			end: function(err, res){
@@ -68,7 +69,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should handle server error after repeat attempt', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: 2,
 			end: function(err, res){
@@ -86,7 +87,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should retry if passed nothing', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: [],
 			end: function(err, res){
@@ -104,7 +105,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should retry if passed "true"', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: true,
 			end: function(err, res){
@@ -122,7 +123,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should handle successful request after repeat attempt from server error', function(done){
-		request(superagent, {
+		request({
 			get: base + '/error/ok/' + uniqid(),
 			query: {qs: 'present'},
 			retry: 2,
@@ -141,7 +142,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should handle server timeout error after repeat attempt', function(done) {
-		request(superagent, {
+		request({
 			get: base + '/delay/400',
 			timeout: 200,
 			retry: 2,
@@ -162,7 +163,7 @@ describe('.retry(count)', function(){
 
 	it('should handle successful request after repeat attempt from server timeout', function(done) {
 		var url = '/delay/400/ok/' + uniqid() + '?built=in' ;
-		request(superagent, {
+		request({
 			get: base + url,
 			query: [ ['string=ified'], [{'json': 'ed'}] ],
 			timeout: 200,
@@ -183,7 +184,7 @@ describe('.retry(count)', function(){
 
 	it('should correctly abort a retry attempt', function(done) {
 		var aborted = false ;
-		var req = request(superagent, {
+		var req = request({
 			get: base + '/delay/400',
 			timeout: 200,
 			retry: 2,
@@ -216,7 +217,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should correctly retain header fields', function(done) {
-		request(superagent, {
+		request({
 			get: base + '/error/ok/' + uniqid(),
 			query: {qs: 'present'},
 			retry: 2,
@@ -236,7 +237,7 @@ describe('.retry(count)', function(){
 	}) ;
 
 	it('should not retry on 4xx responses', function(done) {
-		request(superagent, {
+		request({
 			get: base + '/bad-request',
 			retry: 2,
 			end: function(err, res){
@@ -258,7 +259,7 @@ describe('.retry(count)', function(){
 		function retryCallback(request) {
 			callbackCallCount++ ;
 		}
-		request(superagent, {
+		request({
 			get: base + '/error',
 			retry: [2, retryCallback],
 			end: function(err, res){

@@ -5,6 +5,7 @@ var uri = setup.uri ;
 var assert = require('assert') ;
 var superagent = require('superagent') ;
 var request = require('../') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -13,7 +14,7 @@ describe('request', function(){
 
 	describe('res.statusCode', function(){
 		it('should set statusCode', function(done) {
-			request(superagent, {
+			request({
 				get: [
 					uri + '/login', function(err, res) {
 						try {
@@ -31,7 +32,7 @@ describe('request', function(){
 
 	describe('should allow the send shorthand', function() {
 		it('with callback in the method call', function(done) {
-			request(superagent, {
+			request({
 				get: [
 					uri + '/login', function(err, res) {
 						assert.equal(res.status, 200) ;
@@ -42,7 +43,7 @@ describe('request', function(){
 		}) ;
 
 		it('with data in the method call', function(done) {
-			request(superagent, {
+			request({
 				post: [ uri + '/echo', { foo: 'bar' } ],
 				end: function(err, res) {
 					assert.equal('{"foo":"bar"}', res.text) ;
@@ -52,7 +53,7 @@ describe('request', function(){
 		}) ;
 
 		it('with callback and data in the method call', function(done) {
-			request(superagent, {
+			request({
 				post: [
 					uri + '/echo', { foo: 'bar' },
 					function(err, res) {
@@ -66,7 +67,7 @@ describe('request', function(){
 
 	describe('with a callback', function(){
 		it('should invoke .end()', function(done){
-			request(superagent, {
+			request({
 				get: [
 					uri + '/login',
 					function(err, res){
@@ -85,7 +86,7 @@ describe('request', function(){
 
 	describe('.end()', function(){
 		it('should issue a request', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/login',
 				end: function(err, res){
 					try {
@@ -104,7 +105,7 @@ describe('request', function(){
 				return ;
       
 
-			return request(superagent, {get: uri + '/login'})
+			return request({get: uri + '/login'})
 			.then(function(res) {
 				return res.status ;
 			})
@@ -119,7 +120,7 @@ describe('request', function(){
 				return ;
       
 
-			var req = request(superagent, {get: uri + '/unique'}) ;
+			var req = request({get: uri + '/unique'}) ;
 
 			return Promise.all([req, req, req])
 			.then(function(results){
@@ -135,7 +136,7 @@ describe('request', function(){
 		it('ok', function(done){
 			var calledErrorEvent = false ;
 			var calledOKHandler = false ;
-			request(superagent, {
+			request({
 				get: uri + '/error',
 				ok: function(res){
 					assert.strictEqual(500, res.status) ;
@@ -164,7 +165,7 @@ describe('request', function(){
 
 		it('should should be an Error object', function(done){
 			var calledErrorEvent = false ;
-			request(superagent, {
+			request({
 				get: uri + '/error',
 				on: [
 					'error', function(err){
@@ -198,7 +199,7 @@ describe('request', function(){
 				return ;
       
 
-			return request(superagent, {
+			return request({
 				get: uri + '/error',
 				then: [
 					function(){
@@ -214,7 +215,7 @@ describe('request', function(){
 				return ;
       
 
-			return request(superagent, {
+			return request({
 				get: uri + '/echo',
 				ok: function() {
 					return false ;
@@ -235,7 +236,7 @@ describe('request', function(){
 				return ;
       
 
-			return request(superagent, {
+			return request({
 				get: uri + '/echo',
 				ok: function() {
 					throw new Error('boom') ;
@@ -254,7 +255,7 @@ describe('request', function(){
 
 	describe('res.header', function(){
 		it('should be an object', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/login',
 				end: function(err, res){
 					try {
@@ -281,7 +282,7 @@ describe('request', function(){
 		// Disabled due to bug in 'clone' module as used in this module (see index.js)
 		it('should only set headers for ownProperties of header', function(done) {
 			try {
-				request(superagent, {
+				request({
 					get: uri + '/echo-headers',
 					set: [ 'valid', 'ok' ],
 					end: function(err, res){
@@ -300,7 +301,7 @@ describe('request', function(){
 
 	describe('res.charset', function(){
 		it('should be set when present', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/login',
 				end: function(err, res){
 					try {
@@ -317,7 +318,7 @@ describe('request', function(){
 
 	describe('res.statusType', function(){
 		it('should provide the first digit', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/login',
 				end: function(err, res){
 					try {
@@ -336,7 +337,7 @@ describe('request', function(){
 
 	describe('res.type', function(){
 		it('should provide the mime-type void of params', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/login',
 				end: function(err, res){
 					try {
@@ -354,7 +355,7 @@ describe('request', function(){
 
 	describe('req.set(field, val)', function(){
 		it('should set the header field', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				set: [ ['X-Foo', 'bar'], ['X-Bar', 'baz'] ],
 				end: function(err, res){
@@ -373,7 +374,7 @@ describe('request', function(){
 
 	describe('req.set(obj)', function(){
 		it('should set the header fields', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				set: { 'X-Foo': 'bar', 'X-Bar': 'baz' },
 				end: function(err, res){
@@ -392,7 +393,7 @@ describe('request', function(){
 
 	describe('req.type(str)', function(){
 		it('should set the Content-Type', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				type: 'text/x-foo',
 				end: function(err, res){
@@ -408,7 +409,7 @@ describe('request', function(){
 		}) ;
 
 		it('should map "json"', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				type: 'json',
 				send: '{"a": 1}',
@@ -425,7 +426,7 @@ describe('request', function(){
 		}) ;
 
 		it('should map "html"', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				type: 'html',
 				end: function(err, res){
@@ -443,7 +444,7 @@ describe('request', function(){
 
 	describe('req.accept(str)', function(){
 		it('should set Accept', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/echo',
 				accept: 'text/x-foo',
 				end: function(err, res){
@@ -459,7 +460,7 @@ describe('request', function(){
 		}) ;
 
 		it('should map "json"', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/echo',
 				accept: 'json',
 				end: function(err, res){
@@ -475,7 +476,7 @@ describe('request', function(){
 		}) ;
 
 		it('should map "xml"', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/echo',
 				accept: 'xml',
 				end: function(err, res){
@@ -492,7 +493,7 @@ describe('request', function(){
 		}) ;
 
 		it('should map "html"', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/echo',
 				accept: 'html',
 				end: function(err, res){
@@ -510,7 +511,7 @@ describe('request', function(){
 
 	describe('req.send(str)', function(){
 		it('should write the string', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				type: 'json',
 				send: '{"name":"tobi"}',
@@ -529,7 +530,7 @@ describe('request', function(){
 
 	describe('req.send(Object)', function(){
 		it('should default to json', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				send: { name: 'tobi' },
 				end: function(err, res){
@@ -547,7 +548,7 @@ describe('request', function(){
 
 		describe('when called several times', function(){
 			it('should merge the objects', function(done){
-				request(superagent, {
+				request({
 					post: uri + '/echo',
 					send: [ [{ name: 'tobi' }], [{ age: 1 }] ],
 					end: function(err, res){
@@ -570,7 +571,7 @@ describe('request', function(){
 
 	describe('.end(fn)', function(){
 		it('should check arity', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				send: { name: 'tobi' },
 				end: function(err, res){
@@ -587,7 +588,7 @@ describe('request', function(){
 		}) ;
 
 		it('should emit request', function(done){
-			var req = request(superagent, {post: uri + '/echo'}) ;
+			var req = request({post: uri + '/echo'}) ;
 			req.on('request', function(request){
 				assert.equal(req, request) ;
 				done() ;
@@ -596,7 +597,7 @@ describe('request', function(){
 		}) ;
 
 		it('should emit response', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				send: { name: 'tobi' },
 				on: ['response', function(res){
@@ -614,7 +615,7 @@ describe('request', function(){
 				return done() ;
       
 
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				send: { name: 'tobi' }
 			})
@@ -629,7 +630,7 @@ describe('request', function(){
 				return done() ;
       
 
-			request(superagent, {
+			request({
 				get: uri + '/error'
 			})
 			.then(null, function(err) {
@@ -646,7 +647,7 @@ describe('request', function(){
 				return done() ;
       
 
-			request(superagent, {
+			request({
 				get: uri + '/error',
 				catch: function(err) {
 					assert.equal(err.status, 500) ;
@@ -659,7 +660,7 @@ describe('request', function(){
 
 	describe('.abort()', function(){
 		it('should abort the request', function(done){
-			var req = request(superagent, {
+			var req = request({
 				get: uri + '/delay/3000',
 				end: function(err, res){
 					try {
@@ -682,7 +683,7 @@ describe('request', function(){
 		}) ;
 
 		it('should allow chaining .abort() several times', function(done){
-			var req = request(superagent, {
+			var req = request({
 				get: uri + '/delay/3000'
 			})
 			.end(function(err, res){
@@ -705,7 +706,7 @@ describe('request', function(){
 
 	describe('req.toJSON()', function(){
 		it('should describe the request', function(done){
-			var req = request(superagent, {
+			var req = request({
 				post: uri + '/echo',
 				send: { foo: 'baz' },
 				end: function(err, res){
@@ -726,7 +727,7 @@ describe('request', function(){
 
 	describe('req.options()', function(){
 		it('should allow request body', function(done){
-			request(superagent, {
+			request({
 				options: uri + '/options/echo/body',
 				send: {foo: 'baz'},
 				end: function(err, res) {
@@ -745,7 +746,7 @@ describe('request', function(){
 
 	describe('req.sortQuery()', function(){
 		it('nop with no querystring', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/url',
 				sortQuery: undefined,
 				end: function(err, res){
@@ -761,7 +762,7 @@ describe('request', function(){
 		}) ;
 
 		it('should sort the request querystring', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/url',
 				query: [ ['search=Manny'], ['order=desc'] ],
 				sortQuery: undefined,
@@ -778,7 +779,7 @@ describe('request', function(){
 		}) ;
 
 		it('should allow disabling sorting', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/url',
 				query: [ ['search=Manny'], ['order=desc'] ],
 				sortQuery: [ [undefined], [false] ],
@@ -795,7 +796,7 @@ describe('request', function(){
 		}) ;
 
 		it('should sort the request querystring using customized function', function(done) {
-			request(superagent, {
+			request({
 				get: uri + '/url',
 				query: [ ['name=Nick'], ['search=Manny'], ['order=desc'] ],
 				sortQuery: function(a, b){

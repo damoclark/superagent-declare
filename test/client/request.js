@@ -2,6 +2,9 @@
 var assert = require('assert') ;
 var request = require('../../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
+
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -41,7 +44,7 @@ describe('request', function() {
 		var data = new FormData() ;
 		data.append('foo', 'bar') ;
 
-		request(superagent, {
+		request({
 			post: '/echo',
 			send: data,
 			end: function(err, res){
@@ -76,7 +79,7 @@ describe('request', function() {
 	}) ;
 
 	it('GET invalid json', function(next) {
-		request(superagent, {
+		request({
 			get: '/invalid-json',
 			end: function(err, res) {
 				assert(err.parse) ;
@@ -87,7 +90,7 @@ describe('request', function() {
 	}) ;
 
 	it('GET querystring empty objects', function(next){
-		var req = request(superagent, {
+		var req = request({
 			get: '/querystring',
 			query: {},
 			end: function(err, res){
@@ -99,7 +102,7 @@ describe('request', function() {
 	}) ;
 
 	it('GET querystring object .get(uri, obj)', function(next){
-		request(superagent, {
+		request({
 			get: ['/querystring', { search: 'Manny' }],
 			end: function(err, res){
 				assert.deepEqual(res.body, { search: 'Manny' }) ;
@@ -109,7 +112,7 @@ describe('request', function() {
 	}) ;
 
 	it('GET querystring object .get(uri, obj, fn)', function(next){
-		request(superagent, {
+		request({
 			get: ['/querystring', { search: 'Manny'}, function(err, res){
 				assert.deepEqual(res.body, { search: 'Manny' }) ;
 				next() ;
@@ -118,7 +121,7 @@ describe('request', function() {
 	}) ;
 
 	it('GET querystring object with null value', function(next){
-		request(superagent, {
+		request({
 			get: ['/url', { nil: null }],
 			end: function(err, res){
 				assert.equal(res.text, '/url?nil') ;
@@ -131,7 +134,7 @@ describe('request', function() {
 		if ('undefined' === typeof Blob) 
 			return next() ;
   
-		request(superagent, {
+		request({
 			get: ['/blob', { foo: 'bar'}],
 			responseType: 'blob',
 			end: function(err, res){
@@ -155,7 +158,7 @@ describe('request', function() {
 	it('basic auth', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request(superagent, {
+		request({
 			post: '/auth',
 			auth: ['foo', 'bar'],
 			end: function(err, res){
@@ -169,7 +172,7 @@ describe('request', function() {
 	it('auth type "basic"', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request(superagent, {
+		request({
 			post: '/auth',
 			auth: ['foo', 'bar', {type: 'basic'}],
 			end: function(err, res){
@@ -183,7 +186,7 @@ describe('request', function() {
 	it('auth type "auto"', function(next){
 		window.btoa = window.btoa || require('Base64').btoa ;
 
-		request(superagent, {
+		request({
 			post: '/auth',
 			auth: ['foo', 'bar', {type: 'auto'}],
 			end: function(err, res){
@@ -195,7 +198,7 @@ describe('request', function() {
 	}) ;
 
 	it('progress event listener on xhr object registered when some on the request', function(){
-		var req = request(superagent, {
+		var req = request({
 			get: '/foo',
 			on: ['progress', function(data) {
 			}],
@@ -208,7 +211,7 @@ describe('request', function() {
 	}) ;
 
 	it('no progress event listener on xhr object when none registered on request', function(){
-		var req = request(superagent, {
+		var req = request({
 			get: '/foo',
 			end: []
 		}) ;
@@ -226,7 +229,7 @@ describe('request', function() {
 			return JSON.stringify(data) ;
 		}
 
-		request(superagent, {
+		request({
 			post: '/user',
 			serialize: testParser,
 			type: 'json',
@@ -246,7 +249,7 @@ describe('request', function() {
 				return obj ;
 			} ;
 
-			request(superagent, {
+			request({
 				get: '/arraybuffer',
 				on: [ ['request', function() {
 					this.xhr.responseType = 'arraybuffer' ;
@@ -263,7 +266,7 @@ describe('request', function() {
 				return obj ;
 			} ;
 
-			request(superagent, {
+			request({
 				get: '/arraybuffer',
 				responseType: 'arraybuffer',
 				on: ['response', function(res) {
@@ -275,7 +278,7 @@ describe('request', function() {
 		}) ;
 
 		it('get error status code and rawResponse on file download', function(next) {
-			request(superagent, {
+			request({
 				get: '/arraybuffer-unauthorized',
 				responseType: 'arraybuffer',
 				end: function(err, res) {
@@ -291,7 +294,7 @@ describe('request', function() {
 	}
 
 	it('parse should take precedence over default parse', function(done){
-		request(superagent, {
+		request({
 			get: '/foo',
 			parse: function(res, text) {
 				return 'customText: ' + res.status ;
@@ -305,7 +308,7 @@ describe('request', function() {
 	}) ;
 
 	it('handles `xhr.open()` errors', function(done){
-		request(superagent, {
+		request({
 			get: 'http://foo\0.com',
 			end: function(err, res){
 				assert(err) ;

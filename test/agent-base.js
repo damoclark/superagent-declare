@@ -3,6 +3,7 @@ var base = setup.uri ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 describe('Agent', function() {
@@ -14,7 +15,7 @@ describe('Agent', function() {
 		var called = 0 ;
 		var event_called = 0 ;
 		var agent = superagent.agent() ;
-		agent = request(agent, {
+		agent = request({
 			accept: 'json', 
 			use: function() {
 				called++ ;
@@ -24,7 +25,7 @@ describe('Agent', function() {
 			}],
 			query: {hello: 'world'},
 			set: ['X-test', 'testing']
-		}) ;
+		}, agent) ;
 		assert.equal(0, called) ;
 		assert.equal(0, event_called) ;
 

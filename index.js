@@ -71,6 +71,8 @@ var requiredLast =
 	'catch'
 ] ;
 
+var agent = null ; //eslint-disable-line no-unused-vars
+
 function findFirst(options) {
 	var req = [] ;
 	for(var i = 0 ; i<requiredFirst.length ; i++) {
@@ -93,9 +95,12 @@ function findLast(options) {
 	return req ;
 }
 
-function SuperagentOptions(superagent, options) {
+function SuperagentOptions(options, superagent=agent) {
 	// Our own copy to mutate
 	var opts = clone(options) ;
+
+	if(superagent === undefined || superagent === null)
+		throw new Error('No superagent instance provided') ;
 
 	console.warn('opts blabber='+util.inspect(opts)) ;
 	console.warn('options blabber='+util.inspect(options)) ;
@@ -136,6 +141,10 @@ function SuperagentOptions(superagent, options) {
 	// return
 	return agent ;
 }
+
+SuperagentOptions.use = function(superagent) {
+	agent = superagent ;
+} ;
 
 function call(agent, methodName, parameters) {
 	// console.warn(`parameters=${util.inspect(parameters)}`) ;

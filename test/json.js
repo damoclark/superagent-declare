@@ -5,6 +5,7 @@ var doesntWorkInBrowserYet = setup.NODE ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -12,7 +13,7 @@ describe('req.send(Object) as "json"', function(){
 	this.timeout(20000) ;
 
 	it('should default to json', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			send: { name: 'tobi' },
 			end: function(err, res){
@@ -24,7 +25,7 @@ describe('req.send(Object) as "json"', function(){
 	}) ;
 
 	it('should work with arrays', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			send: [ [ [1, 2, 3] ] ],
 			end: function(err, res){
@@ -36,7 +37,7 @@ describe('req.send(Object) as "json"', function(){
 	}) ;
 
 	it('should work with value null', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			type: 'json',
 			send: 'null',
@@ -49,7 +50,7 @@ describe('req.send(Object) as "json"', function(){
 	}) ;
 
 	it('should work with value false', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			type: 'json',
 			send: 'false',
@@ -63,7 +64,7 @@ describe('req.send(Object) as "json"', function(){
 
 	if (doesntWorkInBrowserYet) {
 		it('should work with value 0', function(done){ // fails in IE9
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				type: 'json',
 				send: '0',
@@ -77,7 +78,7 @@ describe('req.send(Object) as "json"', function(){
 	}
 
 	it('should work with empty string value', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			type: 'json',
 			send: '""',
@@ -91,7 +92,7 @@ describe('req.send(Object) as "json"', function(){
 
 	if (doesntWorkInBrowserYet) {
 		it('should work with GET', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/echo',
 				send: { tobi: 'ferret' },
 				end: function(err, res){
@@ -110,7 +111,7 @@ describe('req.send(Object) as "json"', function(){
 	}
 
 	it('should work with vendor MIME type', function(done){
-		request(superagent, {
+		request({
 			post: uri + '/echo',
 			set: ['Content-Type', 'application/vnd.example+json'],
 			send: { name: 'vendor' },
@@ -124,7 +125,7 @@ describe('req.send(Object) as "json"', function(){
 
 	describe('when called several times', function(){
 		it('should merge the objects', function(done){
-			request(superagent, {
+			request({
 				post: uri + '/echo',
 				send: [ [{ name: 'tobi' }], [{ age: 1 }] ],
 				end: function(err, res){
@@ -143,7 +144,7 @@ describe('res.body', function(){
 
 	describe('application/json', function(){
 		it('should parse the body', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/json',
 				end: function(err, res){
 					res.text.should.equal('{"name":"manny"}') ;
@@ -157,7 +158,7 @@ describe('res.body', function(){
 	if (doesntWorkInBrowserYet) {
 		describe('HEAD requests', function(){
 			it('should not throw a parse error', function(done){
-				request(superagent, {
+				request({
 					head: uri + '/json',
 					end: function(err, res){
 						try {
@@ -177,7 +178,7 @@ describe('res.body', function(){
 
 	describe('Invalid JSON response', function(){
 		it('should return the raw response', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/invalid-json',
 				end: function(err, res){
 					assert.deepEqual(err.rawResponse, ')]}\', {\'header\':{\'code\':200,\'text\':\'OK\',\'version\':\'1.0\'},\'data\':\'some data\'}') ;
@@ -187,7 +188,7 @@ describe('res.body', function(){
 		}) ;
 
 		it('should return the http status code', function(done){
-			request(superagent, {
+			request({
 				get: uri + '/invalid-json-forbidden',
 				end: function(err, res){
 					assert.equal(err.statusCode, 403) ;
@@ -200,7 +201,7 @@ describe('res.body', function(){
 	if (doesntWorkInBrowserYet) {
 		describe('No content', function(){
 			it('should not throw a parse error', function(done){
-				request(superagent, {
+				request({
 					get: uri + '/no-content',
 					end: function(err, res){
 						try {
@@ -221,7 +222,7 @@ describe('res.body', function(){
 	if (doesntWorkInBrowserYet) {
 		describe('application/json+hal', function(){
 			it('should parse the body', function(done){
-				request(superagent, {
+				request({
 					get: uri + '/json-hal',
 					end: function(err, res){
 						if (err) return done(err) ;
@@ -237,7 +238,7 @@ describe('res.body', function(){
 	if (doesntWorkInBrowserYet) {
 		describe('vnd.collection+json', function(){
 			it('should parse the body', function(done){
-				request(superagent, {
+				request({
 					get: uri + '/collection-json',
 					end: function(err, res){
 						res.text.should.equal('{"name":"chewbacca"}') ;

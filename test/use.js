@@ -4,6 +4,7 @@ var uri = setup.uri ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -20,7 +21,7 @@ describe('request', function(){
 				req.url = uri + req.url ;
 				return req ;
 			}
-			request(superagent, {
+			request({
 				get: '/echo',
 				use: [ [uuid], [prefix] ],
 				end: function(err, res){
@@ -43,7 +44,7 @@ describe('subclass', function() {
 	}) ;
 
 	it('should be an instance of Request', function(){
-		var req = request(superagent, {get: '/'}) ;
+		var req = request({get: '/'}) ;
 		assert(req instanceof superagent.Request) ;
 	}) ;
 
@@ -63,7 +64,7 @@ describe('subclass', function() {
 
 		superagent.Request = NewRequest ;
 
-		var req = request(superagent, {get: '/'}).send() ;
+		var req = request({get: '/'}).send() ;
 		assert(constructorCalled) ;
 		assert(sendCalled) ;
 		assert(req instanceof NewRequest) ;

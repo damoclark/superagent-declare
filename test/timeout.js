@@ -3,6 +3,7 @@ var base = setup.uri ;
 var assert = require('assert') ;
 var request = require('../') ;
 var superagent = require('superagent') ;
+request.use(superagent) ;
 
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
@@ -11,7 +12,7 @@ describe('.timeout(ms)', function(){
 
 	describe('when timeout is exceeded', function(){
 		it('should error', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/500',
 				timeout: 150,
 				end: function(err, res){
@@ -24,7 +25,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should handle gzip timeout', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/zip',
 				timeout: 150,
 				end: function(err, res){
@@ -37,7 +38,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should handle buffer timeout', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/json',
 				buffer: true,
 				timeout: 150,
@@ -51,7 +52,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should error on deadline', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/500',
 				timeout: {deadline: 150},
 				end: function(err, res){
@@ -64,7 +65,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should support setting individual options', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/500',
 				timeout: [ [{deadline: 10}], [{response: 99999}] ],
 				end: function(err, res){
@@ -77,7 +78,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should error on response', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/500',
 				timeout: {response: 150},
 				end: function(err, res){
@@ -91,7 +92,7 @@ describe('.timeout(ms)', function(){
 		}) ;
 
 		it('should accept slow body with fast response', function(done){
-			request(superagent, {
+			request({
 				get: base + '/delay/slowbody',
 				timeout: {response: 1000},
 				on: ['progress', function(){
