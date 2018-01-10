@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2018 Damien Clark
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ *
+ */
+
 var util = require('util') ;
 var clone = require('clone') ;
 
@@ -102,8 +119,6 @@ function SuperagentOptions(options, superagent=agent) {
 	if(superagent === undefined || superagent === null)
 		throw new Error('No superagent instance provided') ;
 
-	console.warn('opts blabber='+util.inspect(opts)) ;
-	console.warn('options blabber='+util.inspect(options)) ;
 	// Check only valid options provided
 	Object.keys(opts).forEach(function(opt){
 		if(!allowedOptions.hasOwnProperty(opt))
@@ -147,7 +162,6 @@ SuperagentOptions.use = function(superagent) {
 } ;
 
 function call(agent, methodName, parameters) {
-	// console.warn(`parameters=${util.inspect(parameters)}`) ;
 	if(!Array.isArray(parameters))
 		parameters = [].concat(parameters) ;
 
@@ -155,11 +169,10 @@ function call(agent, methodName, parameters) {
 	if(parameters.length === 0)
 		parameters.push([]) ;
 
-	// console.warn(`agent=${util.inspect(agent)}`) ;
 	var args = [] ;
 	parameters.forEach(function(param) {
 		if(args.length === 0 && Array.isArray(param)) {
-			console.warn(`${methodName}(${param.join(',')})`) ;
+			// console.warn(`${methodName}(${param.join(',')})`) ;
 			agent = agent[methodName].apply(agent, param) ;
 		}
 		else {
@@ -167,7 +180,7 @@ function call(agent, methodName, parameters) {
 		}
 	}) ;
 	if(args.length > 0) {
-		console.warn(`${methodName}(${args.join(',')})`) ;
+		// console.warn(`${methodName}(${args.join(',')})`) ;
 		agent = agent[methodName].apply(agent, args) ;
 	}
 
