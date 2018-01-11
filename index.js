@@ -111,6 +111,12 @@ function findLast(options) {
 	return req ;
 }
 
+/**
+ * Create an instance of Superagent with declarative uncurried syntax
+ * @param {object} options Options relating to the request, expressed as an key/value object based on Superagent API
+ * @param {superagent} [superagent] Superagent function to create the request instance
+ * @constructor
+ */
 function SuperagentDeclare(options, superagent=agent) {
 	// Our own copy to mutate
 	var opts = clone(options) ;
@@ -156,6 +162,10 @@ function SuperagentDeclare(options, superagent=agent) {
 	return agent ;
 }
 
+/**
+ * Specify the superagent function to use for all subsequent calls
+ * @param {superagent} superagent The superagent function from the module
+ */
 SuperagentDeclare.use = function(superagent) {
 	agent = superagent ;
 } ;
