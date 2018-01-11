@@ -4,8 +4,6 @@ var request = require('../../') ;
 var superagent = require('superagent') ;
 request.use(superagent) ;
 
-request.use(superagent) ;
-
 /*eslint no-undef:0*/
 /*eslint no-unused-vars:0*/
 describe('request', function() {
