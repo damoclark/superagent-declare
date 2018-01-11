@@ -15,7 +15,6 @@
  *
  */
 
-var util = require('util') ;
 var clone = require('clone') ;
 
 // Only these methods are supported
@@ -112,7 +111,7 @@ function findLast(options) {
 	return req ;
 }
 
-function SuperagentOptions(options, superagent=agent) {
+function SuperagentDeclare(options, superagent=agent) {
 	// Our own copy to mutate
 	var opts = clone(options) ;
 
@@ -157,7 +156,7 @@ function SuperagentOptions(options, superagent=agent) {
 	return agent ;
 }
 
-SuperagentOptions.use = function(superagent) {
+SuperagentDeclare.use = function(superagent) {
 	agent = superagent ;
 } ;
 
@@ -187,7 +186,7 @@ function call(agent, methodName, parameters) {
 	return agent ;
 }
 
-module.exports = SuperagentOptions ;
+module.exports = SuperagentDeclare ;
 
 /*
 request.get('/search')
