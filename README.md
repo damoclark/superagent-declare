@@ -127,12 +127,12 @@ superagent
 This section outlines how the superagent API translates into a declarative JS 
 data structure that can be passed to superagent-declare.
 
-Thee following definitions are used throughout:
+The following definitions are used throughout:
 
-method = superagent method name (e.g. send() or field())
-argument = an argument or parameter passed to a method (e.g. '/upload' in post('/upload') )
+* method = superagent method name (e.g. send() or field())
+* argument = an argument or parameter passed to a method (e.g. '/upload' in post('/upload') )
 
-The object literal passed to superagent-delcare has these forms.
+The object literal passed to superagent-declare has these forms.
 
 ### Call a method with no arguments or a single argument
 * `method: []` Call method once with no arguments
@@ -249,7 +249,19 @@ Contributions are most welcome.
 
 ## Licence
 
-copyright
+Copyright (c) 2018 Damien Clark
+
+Licensed under the Apache License, Version 2.0
+
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+   
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 
 ## Acknowledgements / Attribution
