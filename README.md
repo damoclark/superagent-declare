@@ -31,7 +31,7 @@ request({
 	field: [
 		['user[name]', 'Tobi'],
 		['user[email]', 'tobi@learnboost.com'],
-		[ friends[]', ['loki', 'jane'] ],
+		['friends[]', ['loki', 'jane'] ],
 	],
 	attach: ['image', 'path/to/tobi.png'],
 	then: callback
@@ -105,7 +105,7 @@ request({
 	field: [
 		['user[name]', 'Tobi'],
 		['user[email]', 'tobi@learnboost.com'],
-		[ friends[]', ['loki', 'jane'] ],
+		['friends[]', ['loki', 'jane'] ],
 	],
 	attach: ['image', 'path/to/tobi.png'],
 	then: callback
@@ -144,7 +144,7 @@ The object literal passed to superagent-declare has these forms.
 request({
 	end: [], // Invoke the request and ignore the result
 	post: '/upload',
-	field: { 'friends[]', ['loki', 'jane'] },
+	field: { 'friends[]': ['loki', 'jane'] },
 	send: [ [ [1, 2, 3] ] ], //Send an array of values as body of request
 }) ;
 ```
@@ -235,7 +235,7 @@ request({
 	field: [
 		['user[name]', 'Tobi'],
 		['user[email]', 'tobi@learnboost.com'],
-		[ friends[]', ['loki', 'jane'] ],
+		['friends[]', ['loki', 'jane'] ],
 	],
 	attach: ['image', 'path/to/tobi.png'],
 	then: callback
