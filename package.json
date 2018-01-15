@@ -1,6 +1,6 @@
 {
   "name": "superagent-declare",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provides a declarative and uncurried API to superagent",
   "main": "index.js",
   "scripts": {
