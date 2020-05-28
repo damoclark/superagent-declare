@@ -2,7 +2,6 @@
 
 [![NPM](https://nodei.co/npm/superagent-declare.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/superagent-declare/)
 
-
 ## Summary
 
 Go from this:
@@ -11,12 +10,12 @@ Go from this:
 const request = require('superagent') ;
 
 request
-.post('/upload')
-.field('user[name]', 'Tobi')
-.field('user[email]', 'tobi@learnboost.com')
-.field('friends[]', ['loki', 'jane'])
-.attach('image', 'path/to/tobi.png')
-.then(callback) ;
+	.post('/upload')
+	.field('user[name]', 'Tobi')
+	.field('user[email]', 'tobi@learnboost.com')
+	.field('friends[]', ['loki', 'jane'])
+	.attach('image', 'path/to/tobi.png')
+	.then(callback) ;
 ```
 
 to this:
@@ -44,7 +43,7 @@ Superagent-declare provides a [declarative](https://codeburst.io/declarative-vs-
 and [uncurried](https://medium.com/@JosephJnk/currying-and-uncurrying-in-javascript-and-flow-98877c8274ff) API for the 
 fantastic superagent module.  
 
-Why?  The primary driver for writing this module is to be able to store a declarative representation of all the request
+Why? The primary driver for writing this module is to be able to store a declarative representation of all the request
 parameters without having to define them as lines of javascript code.  As an example, you are able to store these 
 request parameters in a configuration file.  Furthermore, the request parameters declared in the data structure
 can be specified in any order.
@@ -76,9 +75,7 @@ request({ /* Usual superagent API options here */ }) ;
 request({ /* Usual superagent API options here */ }, superagent) ;
 ```
 
-The `request` call above will return an instance of superagent with the given methods invoked, but can then be further mutated.  In other words, you
-do not need to define all the options for your request using superagent-declare, you can programmatically augment the
-resulting object.  i.e. based on example in summary:
+The `request` call above will return an instance of superagent with the given methods invoked, but can then be further mutated.  In other words, you do not need to define all the options for your request using superagent-declare, you can programmatically augment the resulting object.  i.e. based on example in summary:
 
 ```javascript
 request({
@@ -114,12 +111,12 @@ request({
 // and can also call this way in same codebase
 
 superagent
-.post('/upload')
-.field('user[name]', 'Tobi')
-.field('user[email]', 'tobi@learnboost.com')
-.field('friends[]', ['loki', 'jane'])
-.attach('image', 'path/to/tobi.png')
-.then(callback) ;
+	.post('/upload')
+	.field('user[name]', 'Tobi')
+	.field('user[email]', 'tobi@learnboost.com')
+	.field('friends[]', ['loki', 'jane'])
+	.attach('image', 'path/to/tobi.png')
+	.then(callback) ;
 ```
 
 ## Superagent-declare API Syntax
@@ -135,6 +132,7 @@ The following definitions are used throughout:
 The object literal passed to superagent-declare has these forms.
 
 ### Call a method with no arguments or a single argument
+
 * `method: []` Call method once with no arguments
 * `method: 'argument'` Call method once with one argument
 * `method: {'key': argument}` Call method once with one argument
@@ -145,11 +143,12 @@ request({
 	end: [], // Invoke the request and ignore the result
 	post: '/upload',
 	field: { 'friends[]': ['loki', 'jane'] },
-	send: [ [ [1, 2, 3] ] ], //Send an array of values as body of request
+	send: [ [ [1, 2, 3] ] ], // Send an array of values as body of request
 }) ;
 ```
 
 ### Call a method with two or more arguments
+
 * `method: [ 'arg1', 'arg2', ... ]` Call method once with two or more arguments
 * `method: [ 'arg1', ['arg2 element 0', 'arg2 element 1'], ... ]` Call method once with two or more arguments
 
@@ -162,6 +161,7 @@ request({
 ```
 
 ### Call a method multiple times with one or multiple arguments
+
 * `method: [ ['call1 arg1', 'call1 arg2'], ['call2 arg1', 'call2 arg2'],  ... ]` Call method two or more times with sub-array arguments
 
 ```javascript
@@ -173,7 +173,6 @@ request({
 }) ;
 ```
 
-
 ## Examples
 
 Following are many examples and patterns that show how to use the declarative API.
@@ -184,51 +183,63 @@ request.get('/search')
 request({
 	get: '/search'
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request.query({ email: 'joe@smith.com' })
 
 request({
 	query: { email: 'joe@smith.com' }
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request
-.query('search=Manny')
-.query('range=1..5')
+	.query('search=Manny')
+	.query('range=1..5')
 
 request({
 	query: [ ['search=Manny'], ['range=1..5'] ]
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request
-.query({ query: 'Manny' })
-.query({ range: '1..5' })
-.query({ order: 'desc' })
+	.query({ query: 'Manny' })
+	.query({ range: '1..5' })
+	.query({ order: 'desc' })
 
 request({
 	query: [ [{ query: 'Manny' }], [{ range: '1..5' }], [{ order: 'desc' }] ]
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request.set('API-Key', 'foobar')
 
 request({
 	set: ['API-Key', 'foobar']
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request
-.set('API-Key', 'foobar')
-.set('Accept', 'application/json')
+	.set('API-Key', 'foobar')
+	.set('Accept', 'application/json')
 
 request({
 	set: [ ['API-Key', 'foobar'], ['Accept', 'application/json'] ]
 }) ;
+
 //-------------------------------------------------------------------------------
+
 request
-.post('/upload')
-.field('user[name]', 'Tobi')
-.field('user[email]', 'tobi@learnboost.com')
-.field('friends[]', ['loki', 'jane'])
-.attach('image', 'path/to/tobi.png')
-.then(callback);
+	.post('/upload')
+	.field('user[name]', 'Tobi')
+	.field('user[email]', 'tobi@learnboost.com')
+	.field('friends[]', ['loki', 'jane'])
+	.attach('image', 'path/to/tobi.png')
+	.then(callback);
 
 request({
 	post: '/upload',
@@ -243,7 +254,6 @@ request({
 ```
 
 ## Contributions
-
 
 Contributions are most welcome.
 
@@ -263,8 +273,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-
 ## Acknowledgements / Attribution
 
 Many thanks to the team who created and maintain the [superagent](https://github.com/visionmedia/superagent) project.
-
