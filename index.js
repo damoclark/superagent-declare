@@ -84,7 +84,8 @@ var requiredLast =
 	'send',
 	'end',
 	'then',
-	'catch'
+	'catch',
+	'pipe'
 ] ;
 
 var agent = null ; //eslint-disable-line no-unused-vars
